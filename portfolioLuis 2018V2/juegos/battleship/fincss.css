@@ -1,0 +1,50 @@
+/*////////////////////////////////////- fin html -///////////////////////////////////*/
+
+body{
+	margin:0;
+	background-image: url("img/d.jpg");
+    background-repeat: no-repeat;
+    background-position: fixed;
+    z-index:-1;
+	 background-size: cover;
+}
+#barrawin {	
+	border-top: 3px solid #B47D37;
+	border-bottom: 3px solid #B47D37;
+	background-color: rgba(7, 7, 7, 0.5);
+    display: block;
+    font-size: 2em;
+    position: static;
+    bottom: 0;
+	margin-top:20%;
+    text-align: center;
+    width: 100%;
+}
+
+
+#barrawin1 {	
+	border-top: 3px solid #B47D37;
+
+	background-color: rgba(7, 7, 7, 0.9);
+    display: block;
+    font-size: 2em;
+    position: static;
+    bottom: 0;
+	
+    text-align: center;
+    width: 100%;
+}
+
+h1{
+	margin-top: 2em;
+	text-align: center;
+	text-transform: uppercase;
+	font-size:3em;
+	color:#B1C9DA;
+}
+
+img{
+	
+	max-width: 100%;
+    height: auto;
+}

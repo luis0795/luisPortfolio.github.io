@@ -1,0 +1,86 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Arrastrar y soltar</title>
+</head>
+<body>
+<div class="container_4">
+  <div class="grid_4" style="margin-top:15px">
+    <h1>PLANTA DE RECICLAJE VIRTUAL </h1>
+	
+    <section id="user-levels">
+	
+    <div id="unassigned" class="drag" ondrop="dropUser(this, event)" ondragenter="return false" ondragover="return false">
+    <span>TIPOS DE BASURA</span>
+      <a draggable="true" class="user" id="A1" ondragstart="dragUser(this, event)">botella</a>
+      <a draggable="true" class="user" id="A2" ondragstart="dragUser(this, event)">Cascara Platano H.</a>
+      <a draggable="true" class="user" id="A3" ondragstart="dragUser(this, event)">Brick leche</a>
+      <a draggable="true" class="user" id="A4" ondragstart="dragUser(this, event)">cascaras naranja</a>
+      
+    </div>
+	
+	<h1 id="demo"></h1>
+    <div id="Div1" class="drop" ondrop="dropUser(this, event)" ondragenter="return false" ondragover="return false"><img src="img/pl.png" height="200" width="200"></div>
+    <div id="Div2" class="drop" ondrop="dropUser(this, event)" ondragenter="return false" ondragover="return false"><img src="img/p.png" height="200" width="200"></div>
+    <div id="Div3" class="drop" ondrop="dropUser(this, event)" ondragenter="return false" ondragover="return false"><img src="img/n.png" height="200" width="200"></div>
+    <div id="Div4" class="drop" ondrop="dropUser(this, event)" ondragenter="return false" ondragover="return false"><img src="img/v.png" height="200" width="200"></div> 
+
+   
+    <div class="clear"></div>
+    </section>
+
+    <script type="text/javascript">
+		var contador=0;
+		
+        function dragUser(user, event) {
+            event.dataTransfer.setData('User', user.id);// Coje el elemento que se va a mover
+        }
+
+        function dropUser(target, event) {
+			contador++;
+            var user = event.dataTransfer.getData('User');
+            target.appendChild(document.getElementById(user));
+			document.getElementById("demo").innerHTML = +contador;
+        }
+    </script>
+
+    <style type="text/css">
+      .drop {
+		float:left;
+        width: 100px;
+        padding: 20px;
+        height: 50px;
+        margin-left: 100px;
+  
+    
+      }
+	  
+	  .drag {
+        width: 500px;
+        padding: 20px;
+        height: 18px;
+        margin: 30px auto;
+        background: #f7F7F7;
+        border: 1px solid #333;
+      }
+
+   
+
+      .drop a {
+        
+        border-radius: 2px;
+        padding: 5px;
+      } 
+	  .drag a {
+        color: #FFF;
+        background: #FF4b33;
+        border-radius: 2px;
+        padding: 5px;
+      }
+
+    </style>
+    
+  </div>
+</div>
+</body>
+</html>

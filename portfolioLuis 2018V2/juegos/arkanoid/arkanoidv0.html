@@ -1,0 +1,385 @@
+<html>
+ <head>
+ <!-- la siguiente linea añade jquery a nuestro juego-->
+ <script type="text/javascript" src="jquery-1.2.6.js"></script>
+  <script type="application/x-javascript">
+//inicio libreria
+var x = 150; //tamaño canvas
+var y = 260;	//tamaño canvas
+var ladrillo=0; 
+var veces=1;
+var xd=0; //desplazamiento de la bola
+var yd=0; //desplazamiento de la bola
+var dx = 1.5;
+var dy = -4;
+var ctx;
+var disparo=false;
+var WIDTH;
+var HEIGHT;
+var paddlex;
+var paddleh = 10;
+var paddlew = 75;
+var rightDown = false;
+var leftDown = false;
+var canvasMinX = 0;
+var canvasMaxX = 0;
+var intervalId = 0;
+var bricks;
+var NROWS = 5;
+var NCOLS = 5;
+var BRICKWIDTH;
+var BRICKHEIGHT = 15;
+var PADDING = 1;
+var marcador=0;
+var vidas=3;
+
+function init() {
+  ctx = document.getElementById("canvas").getContext("2d");
+  WIDTH = $("#canvas").width();
+  HEIGHT = $("#canvas").height();
+  
+  //inicio de la paleta//
+  paddlex = WIDTH / 2-35;
+  //-------------------//
+  BRICKWIDTH = (WIDTH/NCOLS) - 1;
+  canvasMinX = $("#canvas").offset().left;
+  canvasMaxX = canvasMinX + WIDTH;
+  
+  //aqui construimos los ladrillos//
+  initbricks();
+  //-----------------------------//
+  intervalId = setInterval(draw, 10);//tasa de refresco imagenes
+ 
+  
+  return intervalId;
+}
+
+
+//Construimos el circulo//
+function circle(x,y,r) {
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI*2, true);
+  ctx.closePath();
+  ctx.fill();
+}
+//---------------------//
+
+function rect(x,y,w,h) {
+  ctx.beginPath();
+  ctx.rect(x,y,w,h);
+  ctx.closePath();
+  ctx.fill();
+  
+}
+
+//pintado del disparo//
+/*function rectD(NROWS,rowheight,row,col,ladrillo){
+	ctx.beginPath();
+	ctx.rect(paddlex+paddlew/2,yd,5,10);
+	yd--;
+	ctx.closePath();
+	ctx.fillStyle="#F50C1F";
+	ctx.fill();
+	if (yd < NROWS * rowheight && row >= 0 && col >= 0 && ladrillo == 1) {
+	disparo=false;
+	clear;
+    bricks[row][col] = 0;
+	marcador =marcador +50
+  }
+}*/
+//-----------------//
+
+function clear() {
+  ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  rect(0,0,WIDTH,HEIGHT);
+}
+
+//controlamos la paleta
+function onKeyDown(evt) {
+  if (evt.keyCode == 39) rightDown = true;
+  else if (evt.keyCode == 37) leftDown = true;
+}
+//Evento disparo//
+function onKeyDown(evt) {
+  if (evt.keyCode == 32) disparo = true;
+  yd=HEIGHT-paddleh;
+  xd=paddlex+paddlew/2;
+
+}
+//-------------//
+
+function onKeyUp(evt) {
+  if (evt.keyCode == 39) rightDown = false;
+  else if (evt.keyCode == 37) leftDown = false;
+}
+
+$(document).keydown(onKeyDown);
+$(document).keyup(onKeyUp);
+
+function onMouseMove(evt) {
+  if (evt.pageX > canvasMinX && evt.pageX < canvasMaxX) {
+    paddlex = Math.max(evt.pageX - canvasMinX - (paddlew/2), 0);
+    paddlex = Math.min(WIDTH - paddlew, paddlex);
+  }
+}
+
+$(document).mousemove(onMouseMove);
+
+function initbricks() {
+    bricks = new Array(NROWS);
+    for (i=0; i < NROWS; i++) {
+        bricks[i] = new Array(NCOLS);
+        for (j=0; j < NCOLS; j++) {
+            bricks[i][j] = 1;
+        }
+    }
+}
+
+function drawbricks() {
+  for (i=0; i < NROWS; i++) {
+   
+    for (j=0; j < NCOLS; j++) {
+	
+      if (bricks[i][j] == 1) {
+     ctx.fillStyle = colcolors[j];
+		rect((j * (BRICKWIDTH + PADDING)) + PADDING, 
+             (i * (BRICKHEIGHT + PADDING)) + PADDING,
+             BRICKWIDTH, BRICKHEIGHT);
+
+      }
+	 
+    }
+  }
+}
+//fin de la libreria
+var ballr = 15;
+var colcolors = ["#FF1C0A", "#FFFD0A", "#00A308", "#0008DB", "#EB0093"];//colores ladrillos
+var paddlecolor = "#FFFFFF";
+var ballcolor = "#FFFFFF";
+var backcolor = "#000000";//color del fondo del juego
+
+
+function draw() {
+	
+
+  ctx.fillStyle = backcolor;
+  clear();
+  ctx.fillStyle = ballcolor;
+  circle(x, y, ballr);
+  
+
+
+  if (rightDown) paddlex += 5;
+  else if (leftDown) paddlex -= 5;
+  ctx.fillStyle = paddlecolor;
+	//paletaaa//
+  rect(paddlex, HEIGHT-paddleh, paddlew, paddleh);
+ 
+	drawbricks();
+	
+
+	
+	/*Inicio prueba*/
+	if(disparo==true){
+	if(veces==1){
+		veces++;
+		document.getElementById("divDisparo").className="divRecarga";
+		
+	}
+	veces++;
+	document.getElementById("barraProgreso").value=veces;
+	ctx.beginPath();
+	ctx.rect(xd,yd,5,10);
+	yd--;
+	ctx.closePath();
+	ctx.fillStyle="#F50C1F";
+	ctx.fill();
+	
+	rowheight = BRICKHEIGHT + PADDING;
+	colwidth = BRICKWIDTH + PADDING;
+	row = Math.floor(yd/rowheight);
+	col = Math.floor(xd/colwidth);
+	
+	
+
+	if (yd < NROWS * rowheight && row >= 0 && col >= 0 && bricks[row][col] == 1) {
+	disparo=false;
+	clear;
+    bricks[row][col] = 0;
+	veces=1;
+	document.getElementById("divDisparo").className="divFuego";
+	marcador = marcador +50
+	 		
+	}
+  }
+	//Fin de prueba
+	
+  //if(disparo==true){
+	
+  rowheight = BRICKHEIGHT + PADDING;
+  colwidth = BRICKWIDTH + PADDING;
+  row = Math.floor(y/rowheight);
+  col = Math.floor(x/colwidth);
+  
+  
+  	//este if evalua columnas y filas y puntua por cada ladrillo roto
+  //reverse the ball and mark the brick as broken
+  if (y < NROWS * rowheight && row >= 0 && col >= 0 && bricks[row][col] == 1) {
+	 //                     filas mayor que 0 y col mayor que 0 y ladrillos=1(indica que el ladrillo no esta roto).
+    dy = -dy;
+    bricks[row][col] = 0;//ladrillo roto sumamos 50 puntos en marcador 
+	marcador = marcador +50
+	
+	
+/* ctx.font = "20px sans-serif";
+//con stroke pintamos letra hueca con fill el hueco
+ctx.strokeStyle="#CF1E1E";
+ctx.fillStyle="#1AE12B";
+ctx.fillText("PUNTUACION"+marcador,20,HEIGHT-25);
+ctx.strokeText("PUNTUACION"+marcador,20,HEIGHT-25); 
+*/
+  }
+ 
+ //aqui configura el rebote de la bola segun los parametros indicados
+  if (x + dx + ballr > WIDTH || x + dx - ballr < 0)
+    dx = -dx;
+//aqui configura el rebote de la bola segun los parametros indicados
+  if (y + dy - ballr < 0)
+    dy = -dy;
+	
+	
+  else if (y + dy + ballr > HEIGHT - paddleh) {
+		//mueve la bola en otra posicion
+		if (x > paddlex && x < paddlex + paddlew) {
+		  //move the ball differently based on where it hit the paddle
+		  dx = 8 * ((x-(paddlex+paddlew/2))/paddlew);
+		  dy = -dy;
+		  
+		  
+		}  
+	// seteamos las opciones cuando nos quedamos sin vida 
+		else if (y + dy + ballr >= HEIGHT){
+			vidas--;
+			if(vidas>0){
+				x=120;
+				y=150;
+				dy = -dy;
+			//recoloca 
+			} else{
+			  //clearInterval(intervalId);
+			  //GAME OVER AQUII
+			  //if(y + dy + ballr == HEIGHT){
+				ctx.font = "30px sans-serif";
+				//con stroke pintamos letra hueca con fill el hueco
+				ctx.strokeStyle="#CF1E1E";
+				ctx.fillStyle="#1AE12B";
+				ctx.fillText("Game Over",WIDTH/2-65,HEIGHT/2);
+				ctx.strokeText("Game Over",WIDTH/2-65,HEIGHT/2);
+				
+				clearInterval(intervalId);
+			  }
+		  }
+		  
+	  //else if (y + dy + ballr >= HEIGHT){
+      //clearInterval(intervalId);
+	  //GAME OVER AQUII
+	  //if(y + dy + ballr == HEIGHT){
+	 //	ctx.font = "30px sans-serif";
+		//con stroke pintamos letra hueca con fill el hueco
+		//ctx.strokeStyle="#CF1E1E";
+		//ctx.fillStyle="#1AE12B";
+		//ctx.fillText("Game Over",WIDTH/2-65,HEIGHT/2);
+		//ctx.strokeText("Game Over",WIDTH/2-65,HEIGHT/2);
+		//clearInterval(intervalId);
+	  //}
+
+  }
+ 
+  x += dx;
+  y += dy;
+  
+  
+  //------------------------------------------- mostramos puntuacion y vidas ------------------------------------------------//
+  	document.getElementById("boxVidas").innerHTML = "Tienes: "+vidas+ " vidas";
+	
+	//inicio prueba puntuacion
+	 ctx.font = "15px sans-serif";
+		//con stroke pintamos letra hueca con fill el hueco
+		ctx.strokeStyle="#CF1E1E";
+		ctx.fillStyle="#1AE12B";
+		
+		ctx.fillText("PUNTUACION : "+marcador +"      VIDAS: "+vidas,20,HEIGHT-250);
+		ctx.strokeText("PUNTUACION : "+marcador +"      VIDAS: "+vidas,20,HEIGHT-250); 
+	 //fin prueba puntuacion
+	 
+	//}
+}
+
+
+
+
+</script>
+<style>
+	.divFuego{
+		background-color:#303842;
+		border:1px solid black; 
+		width:300px; 
+		height:30px;
+		box-shadow:rgb(95,196,101) -5px -5px inset;
+		-moz-box-shadow:rgb(95,196,101)-5px -5px inset;
+		-webkit-box-shadow:rgb(95,196,101)-5px -5px inset;
+		}
+		
+	.divRecarga{
+		background-color:red;
+		border:1px solid black; 
+		width:300px; 
+		height:30px;
+		text-align:center;
+		box-shadow:rgb(196,95,95) 5px 5px inset;
+		-moz-box-shadow:rgb(196,95,95)5px 5px inset;
+		-webkit-box-shadow:rgb(196,95,95)5px 5px inset;
+	}
+	
+	.boxVidas{
+		background-color:yellow;
+		border:1px solid black; 
+		width:300px; 
+		height:100px;
+		text-align:center;
+		
+	}
+	
+	#barraProgreso{
+		width:300px;
+		
+	
+	}
+	body{
+		text-align:center;
+		<!--background-image: url("wall.jpg");-->
+	}
+	div{
+		margin:auto;
+	}
+	h1{
+		color:white;
+	}
+</style>
+ </head>
+ <body bgcolor="black" onload="init()">
+ 
+   <canvas id="canvas" width="300" height="350" style="border:1px solid;"></canvas>
+   
+   <div id="divDisparo" class="divFuego"></div>
+   
+  
+   
+   <progress id="barraProgreso" max="200" value="220">1%</progress>
+   
+   <div id="boxVidas" class="boxVidas"></div>
+	
+  <!-- <h1 id="puntuacion" onclick="puntos()"> Una vez acabada la partida pulsa aqui para saber tu puntuacion</h1> -->
+
+ </body>
+</html>

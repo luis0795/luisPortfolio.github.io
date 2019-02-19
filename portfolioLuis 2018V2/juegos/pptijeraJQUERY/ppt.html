@@ -1,0 +1,269 @@
+<html>
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<!-- <link rel="stylesheet" type="text/css" href="stilos.css" /> -->
+		<script>
+	$(document).ready(function(){
+		$('#resultado').html("<br> Elige una de las opciones para comenzar a jugar! ");
+		$("#opcionx").html('<img src="img/q.png" alt="piedra" height="200" width="200"/>');
+		$("img").click(function(){
+		
+		
+		
+        var elemento = $(this).attr("alt");
+			console.log(elemento);
+			
+        var aleatorio=Math.floor(Math.random()*3);	
+			
+			
+			
+			
+        if (aleatorio == 0){
+			elemento_contra = "piedra";
+				$("#opcionx").html('<img src="img/piedra.png" alt="piedra" height="200" width="200"/>');
+			
+			
+		}	
+        else if (aleatorio == 1){
+			elemento_contra = "papel";
+			$("#opcionx").html('<img src="img/papel.png" alt="papel" height="200" width="200"/>');
+		}	
+        else{
+			elemento_contra = "tijera";
+			$("#opcionx").html('<img src="img/tijera.png" alt="tijera" height="200" width="200"/>');
+		}
+		
+        var ganador;
+		
+		
+        if (elemento == elemento_contra){
+			ganador = "empate";
+			}
+        else if ((elemento == "piedra" && elemento_contra == "tijera") || (elemento == "papel" && elemento_contra == "piedra") || (elemento == "tijera" && elemento_contra == "papel")) {
+            ganador = "gana usuario";
+			
+            var actual = parseInt($('.usuario').html());
+            actual += parseInt(1);
+            $('.usuario').html(actual);
+        }else {
+            ganador = "gana ordenador";
+            var actual = parseInt($('.ordenador').html());
+            actual += parseInt(1);
+            $('.ordenador').html(actual);
+        }
+        $('#resultado').html("<br> El resultado es " + ganador);
+         
+		});
+		
+	});	
+		
+		</script>
+		
+		<style>
+		* {
+			box-sizing: border-box;
+			
+		}
+		.row::after {
+			content: "";
+			clear: both;
+			display: table;
+		}
+		[class*="col-"] {
+			float: left;
+			padding: 10px;
+		}
+		html {
+			font-family: "Lucida Sans", sans-serif;
+		}
+		.header {
+			background-color: #E00B27;
+			color: #ffffff;
+			padding: 15px;
+		}
+		.menu ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
+		.menu li {
+			padding: 8px;
+			margin-bottom: 7px;
+			background-color: #33b5e5;
+			color: #ffffff;
+			box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+		}
+		.menu li:hover {
+			background-color: #0099cc;
+		}
+		
+	
+			#show #image1,#image2,#image3,#image4,#image5,#image6 { 
+				margin-top:15px;
+				display: inline-block;
+				float:left;
+				 -moz-transition: transform 1s;
+				 -webkit-transition: transform 1s;
+				 transition: transform 1s;
+			}
+		
+			.flip{
+				 transform: rotate(-90deg);
+			}
+		
+		.aside1 {
+			background-color: #2474A6;
+			padding: 15px;
+			color: #ffffff;
+			text-align: center;
+			font-size: 14px;
+			box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+			
+		}
+		
+
+		.footer {
+			background-color: #F2A30F;
+			color: #ffffff;
+			text-align: center;
+			font-size: 12px;
+			padding: 15px;
+		}
+
+
+
+		@media only screen and (min-width: 350px) {
+			/* For mobile phones: */
+			[class*="col-"] {
+			width: 100%;
+		}
+
+		@media only screen and (min-width: 800px) {
+			/* For tablets: */
+			.col-m-0 {
+				
+				
+				display:none;
+			}
+			.col-m-1 {width: 8.33%;}
+			.col-m-2 {width: 16.66%;}
+			.col-m-3 {width: 25%;}
+			.col-m-4 {width: 33.33%;}
+			.col-m-5 {width: 41.66%;}
+			.col-m-6 {width: 50%;}
+			.col-m-7 {width: 58.33%;}
+			.col-m-8 {width: 66.66%;}
+			.col-m-9 {width: 75%;}
+			.col-m-10 {width: 83.33%;}
+			.col-m-11 {width: 91.66%;}
+			.col-m-12 {width: 100%;}
+		}
+		@media only screen and (min-width: 1000px) {
+			/* For desktop: */
+			.col-1 {width: 8.33%;}
+			.col-2 {width: 16.66%;}
+			.col-3 {width: 25%;	display:block;}
+			.col-4 {width: 33.33%;}
+			.col-5 {width: 41.66%;}
+			.col-6 {width: 50%;}
+			.col-7 {width: 58.33%;}
+			.col-8 {width: 66.66%;}
+			.col-9 {width: 75%;}
+			.col-10 {width: 83.33%;}
+			.col-11 {width: 91.66%;}
+			.col-12 {width: 100%;}
+
+		}
+		
+		
+		.usuario, .u {
+			float: left;
+			font-size: 15px;
+		}
+ 
+		.ordenador, .o {
+			float:left;
+			font-size:15px;
+		}
+		
+		
+		</style>
+		
+</head>
+<body>
+	<div class="header">
+		<h1>¿Piedra, Papel o Tijera?</h1>
+	</div>
+	
+    <div class="row">  
+	
+		<div id="box1" class="col-6 col-m-6 ">
+			<!-- <div class="aside1"> -->
+		
+			
+					<div class="u aside1 col-6 col-m-6 ">Jugador : </div><div class="usuario aside1 col-6 col-m-6"> 0</div>
+					
+					<div id="opcion1" class= "aside1 col-4 col-m-4">
+						<div  class="elemento" id="piedra" value="piedra">
+							
+							<img src="img/piedra.png" alt="piedra" height="200" width="200">
+						</div>
+					</div>
+					<div id="opcion2" class= "aside1 col-4 col-m-4">
+						<div class="elemento" id="papel" value="papel">
+							
+							<img src="img/papel.png" alt="papel" height="200" width="200">
+						</div>
+						
+					</div>
+					<div id="opcion3" class= "aside1 col-4 col-m-4">
+ 						<div class="elemento" id="tijera" value="tijera">
+							
+							<img src="img/tijera.png" alt="tijera" height="200" width="200">
+						</div>
+					</div>
+					
+			<!-- </div> -->
+		</div>
+
+		
+		<div id="box2" class="col-6 col-m-6 ">
+			
+				<div class="o aside1 col-6 col-m-6">Ordenador : </div><div class="ordenador aside1 col-6 col-m-6"> 0</div>
+				
+					
+					<div id="opcionx" class= "aside1 col-12 col-m-12">
+						<!-- <div  class="elementoAleatorio">
+							
+							
+						</div> -->
+					</div>
+					
+				
+		</div>
+		
+		<div id="resultado" class=" aside1 col-12 col-m-12 ">
+		
+		
+		</div>
+	
+	
+	
+	
+		<!-- 
+		<div class="u">Usuario: </div><div class="usuario">0</div>
+		
+		<div class="ordenador ">0</div><div class="o">Ordenador: </div>
+		
+	
+		
+		 -->
+	
+	</div>
+	
+	<div class="footer">
+		<p>v1.0</p>
+	</div>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="barcov2.css">
+</head>
+
+<body>
+	<main>	
+	
+		<div id="barra">
+			<img src="img/main.png">
+		</div>
+	</main>
+	
+	<video id="medio"  autoplay loop poster="img/w4.jpg">
+		<source src="img/battleintro.mp4">
+
+    </video> 
+	<div class="slider">
+					<ul>
+						<li><p>Los hombres viejos declaran las guerras,<br> pero son los jóvenes las que las luchas<br> y los que mueren (Herbert Hoover)</p></li>
+						<li><p>El éxito no es el final, el error no es fatal: <br> es el coraje para continuar <br>lo que cuenta (Winston Churchill)</p></li>
+						<li><p>No debes luchar muy a menudo con un enemigo, <br> o le enseñarás todo tu <br>arte bélico (Napoleón Bonaparte)</p></li>
+						<li><p>Aquel que tiene mil amigos, no le sobra ni uno.<br> Aquel que tiene un enemigo,<br> lo encontrará en todas partes (Ali ibn-Abi-Talib)</p></li>
+					</ul>
+	</div>
+	<p id="intentos">Numero intentos: </p>
+    <p id="tabla"></p>
+	
+    <script>
+	     //-----FUNCIONES-----//	
+		 
+		function finPartida()
+		{
+			fin = 1;
+			 for (var j = 0; j < alto; j++) {
+                for (var i = 0; i < ancho; i++) {
+                    if (tabla[i][j] == 1) {
+                        fin = 0;
+                    }
+                }
+            }
+			return fin;
+		}
+		
+		//mostramos imagen
+		function mouseDown(x)
+		{
+		
+			var idAuxiliar = x.id;
+			var auxX = idAuxiliar.charAt(0);
+			var auxY = idAuxiliar.charAt(1);
+			
+			//si barco=1 paso a 2 es decir barco hundido
+			
+			
+			if (tabla[auxX][auxY]==1)
+			{
+				tabla[auxX][auxY]=2;
+				x.src="img/barco.png";
+				puntos++;
+			}
+			
+			if (tabla[auxX][auxY]==0)
+			{
+				
+				x.src="img/ocean.png";
+				intentos--;
+			}
+			
+			document.getElementById("intentos").innerHTML="Tienes : " +intentos+ " intentos";
+		}
+		
+		//ocultamos imagen
+		function mouseUP(x)
+		{
+			var idAuxiliar = x.id;
+			var auxX = idAuxiliar.charAt(0);
+			var auxY = idAuxiliar.charAt(1);
+			
+			
+			
+			if (tabla[auxX][auxY]==0 || tabla[auxX][auxY]==1)
+			{
+				x.src="img/go.png";
+			}
+			else
+			{
+				x.src="img/hundidovf.png";
+			}
+			
+			var finaux=finPartida();
+			
+			if(finaux==1)
+			{
+				localStorage.setItem(nombre,puntos);
+				location.href = "win.html";
+			
+			}
+			
+			if(intentos==0){
+				location.href = "fin.html";
+			}
+		
+		}
+		
+		
+		
+        //-----DECLARACIONES-----//
+        var cadena =" "; //variable para cadena de texto, se inicializa vacia
+        var fin = 0; //variable para fin bucle while
+		var cont = 0; //declaracion variable contador 
+		
+		var puntos = 0;
+		var nombre=prompt("Introducir nombre:");
+		var alto = prompt("introducir alto, columnas");
+		var ancho = prompt("introducir ancho, filas");
+		var intentos=prompt("introducir numero de intentos");
+		
+		//declaramos un array con el ancho que le pedimos por pantalla
+		var tabla = new Array(ancho);
+		
+		for(var i=0 ; i<ancho; i++){
+			tabla[i] = new Array(alto);
+		};
+        
+		for(i=0; i<ancho; i++){
+			for(j=0; j<alto; j++){
+				tabla[i][j] = Math.floor((Math.random() * 10) + 1)% 2;
+			}
+		};
+		
+        //-----MODELO-----//
+
+        
+          
+            cadena = "<table style=width:auto align=center>";
+			
+            //bucle que recorre posiciones hacia abajo
+				for (var j = 0; j < alto; j++) {
+				
+					//comienzo de la columna de la tabla
+					cadena += "<tr>";
+					
+						//bucle que recorre las posiciones hacia la derecha
+						for (var i = 0; i < ancho; i++) {
+						
+						cadena+="<td><img onmouseup=\"mouseUP(this)\" onmouseDown=\"mouseDown(this)\" id=\""+i+j+"\" src=\"img/go.png\">";
+						
+										
+						}
+					//cierro la columna
+					cadena += "</tr>";
+					
+					
+					}
+			
+            //cierro la tabla
+            cadena += "</table>";
+			
+            //muestro por pantalla la tabla con los arrays en sus posiciones
+            document.getElementById("tabla").innerHTML = cadena;
+			
+            
+           
+          
+			
+        
+		
+       
+//}
+    </script>
+    <noscript>Habilita javascript</noscript>
+	
+	<footer class="sectionx">
+		
+			<div class="container">
+			
+				<div class="textofooter">
+					<p>  Desarrollado por : Luis Miguel Ramos <a href="http://www.jrotero.com/nuestro-centro/">Coop.Enseñanza Jro</a> | All rights reserved &copy 2017 </p>
+				</div>
+			
+			
+			</div>
+			
+			
+		</footer>
+</body>
+
+</html>
